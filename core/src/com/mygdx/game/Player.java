@@ -1,0 +1,149 @@
+package com.mygdx.game;
+
+import com.badlogic.gdx.graphics.g2d.Sprite;
+import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.Sprite;
+import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.physics.box2d.*;
+
+import java.awt.*;
+import java.util.ArrayList;
+
+public class Player {
+    private int x,y;
+    static Sprite Lan;
+    static ArrayList<Texture> tmp;
+    static ArrayList<ArrayList<Texture>> sprites = new ArrayList<ArrayList<Texture>>();
+    Rectangle rect;
+    Body body;
+    public static int frames = 0;
+    int t = 0;
+    int width = 18, height = 34;
+
+    int [] open_list = new int [] {7,7,7,7,7,7,7};
+
+    public Player(){
+        Lan = new Sprite();
+        Load();
+        createbody();
+    }
+
+    public void render(SpriteBatch batch){
+        Lan.setPosition(100,100);
+        batch.draw(Lan,body.getPosition().x - Lan.getWidth() * (float) Math.pow(Main.PPM,2),body.getPosition().y - Lan.getHeight() * (float) Math.pow(Main.PPM, 2), Lan.getWidth() * (float) Math.pow(Main.PPM, 2) * 3, Lan.getHeight() * (float) Math.pow(Main.PPM, 2) * 3);
+
+    }
+
+    public int moveFrames(){ // this is the animation for the movement frames the character
+        if(frames < open_list[Main.moves1]){
+            if(t < 3) {
+                t ++;
+                if(t == 3) {
+                    frames += 1;
+                    if (frames == open_list[Main.moves1]) {
+                        frames = 0;
+                        Main.animation = false;
+                    }
+                    t = 0;
+                }
+            }
+        }
+        return frames;
+    }
+
+
+
+    public void Load(){
+        for(int i = 0; i < open_list.length; i ++ ){
+            for(String w : new String[]{"Lanup", "Landown", "Lanleft", "Lanright" , "LanNW", "LanSW","LanNE"}){
+                tmp = new ArrayList<Texture>();
+                for(int k = 0; k < open_list[i]; k ++){
+                    tmp.add(new Texture("Assets/Lan walk/" + w + "/" + w + k + ".png"));
+                }
+                sprites.add(tmp);
+            }
+        }
+    }
+
+
+    public void MoveBody(int x, int y){
+        body.setTransform(x,y,0);
+    }
+
+
+    public void createbody(){
+
+        rect = new Rectangle((int) Lan.getX(), (int) Lan.getY(), (int) Lan.getWidth(), (int) Lan.getHeight());//create a recto take players x,y,width and height
+
+
+
+        BodyDef bdef = new BodyDef();
+        bdef.type = BodyDef.BodyType.DynamicBody;
+        body = Main.world.createBody(bdef);
+
+        FixtureDef fdef = new FixtureDef();
+        PolygonShape shape = new PolygonShape();
+
+        fdef.shape = shape;
+
+        shape.setAsBox(5 * (float) Math.pow(Main.PPM, 2), 10 * (float) Math.pow(Main.PPM, 2));
+
+        this.body.createFixture(fdef);
+
+        this.body.getFixtureList().get(0).setUserData("Player");
+
+        this.body.setTransform((float) rect.getX(), (float) rect.getY(), 0);
+
+    }
+
+
+    public void update(SpriteBatch batch){
+
+        Lan.setPosition(body.getPosition().x,body.getPosition().y);
+
+        if(Main.animation && Main.moves1 == Main.UP){
+            moveFrames();
+        }
+        else if(Main.animation && Main.moves1 == Main.Down){
+            moveFrames();
+        }
+        else if(Main.animation && Main.moves1 == Main.Left){
+            moveFrames();
+        }
+        else if(Main.animation && Main.moves1 == Main.Right){
+            moveFrames();
+        }
+        else{
+            frames = 0;
+        }
+
+        Lan.set(new Sprite(sprites.get(Main.moves1).get(frames)));
+        this.render(batch);
+    }
+
+
+    public void setX(float x) {
+        Lan.setX(x);
+    }
+
+    public void setY(float y) {
+        Lan.setY(y);
+    }
+
+    public float getX() {
+        return Lan.getX();
+    }
+
+    public float getY() {
+        return Lan.getY();
+    }
+
+    public Body getBody() {
+        return body;
+    }
+
+
+
+}
+
+
