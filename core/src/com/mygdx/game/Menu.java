@@ -1,7 +1,9 @@
 package com.mygdx.game;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Input;
 import com.badlogic.gdx.audio.Music;
+import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
@@ -10,51 +12,110 @@ import java.util.ArrayList;
 
 public class Menu {
 
-    static Sprite Play, Instructions, Quit;
-    ArrayList<Texture> tmp, tmp1, tmp2;
-    static int choice = 0, choice1 = 0, choice2 = 0;
     private Texture background;
-    Music music;
+    Music m;
+    Sound s;
+    static Sprite C_menu, I_menu;
+    static ArrayList<Texture> C_t, I_t;
+    private static ArrayList<ArrayList<Texture>> capcom_Sprites = new ArrayList<ArrayList<Texture>>();
+    private static ArrayList<ArrayList<Texture>> Intro_Sprites = new ArrayList<ArrayList<Texture>>();
+    static int C_frame = 0, timer = 0, C_timer = 0, I_frame = 0;
+    static boolean change = false;
 
     public Menu(){
-        Play = new Sprite();
-        Instructions = new Sprite();
-        Quit = new Sprite();
-
-        tmp = new ArrayList<Texture>();
-        tmp.add(new Texture("Assets/Buttons/Play/play0.png"));
-        tmp.add(new Texture("Assets/Buttons/Play/play1.png"));
-
-        tmp1 = new ArrayList<Texture>();
-        tmp1.add(new Texture("Assets/Buttons/Instructions/instructions0.png"));
-        tmp1.add(new Texture("Assets/Buttons/Instructions/instructions0.png"));
-
-        tmp2 = new ArrayList<Texture>();
-        tmp2.add(new Texture("Assets/Buttons/Quit/quit0.png"));
-        tmp2.add(new Texture("Assets/Buttons/Quit/quit0.png"));
-
-        background = new Texture("Assets/Backgrounds/Mainmenu.png");
-        music = Gdx.audio.newMusic(Gdx.files.internal("Assets/Music/Mainmenu.mp3"));
-
+        C_menu = new Sprite();
+        I_menu = new Sprite();
+        Capcom_load();
+        Intro_load();
+        m = Gdx.audio.newMusic(Gdx.files.internal("Assets/Sound/Title.mp3"));
+        s = Gdx.audio.newSound(Gdx.files.internal("Assets/Sound/Start_SoundEffect.mp3"));
 
     }
 
+    public void Capcom_load(){
+        C_t = new ArrayList<Texture>();
+        for(int k = 0; k < 31; k ++){
+            C_t.add(new Texture("Assets/Menu Intro/Capcom/Capcom" + k + ".png"));
+        }
+        capcom_Sprites.add(C_t);
+    }
+
+    public void Intro_load(){
+        C_t = new ArrayList<Texture>();
+        for(int k = 0; k < 4; k ++){
+            C_t.add(new Texture("Assets/Menu Intro/Intro/Intro" + k + ".png"));
+        }
+        Intro_Sprites.add(C_t);
+    }
+
+
+
+    public int C_frame(){
+        if(C_timer < 2){
+            C_timer ++;
+            if(C_timer == 2){
+                if(C_frame < 31){
+                    C_frame ++;
+                    if(C_frame == 31){
+                        C_frame = 0;
+                        change = true;
+
+
+                    }
+                    C_timer = 0;
+
+                }
+            }
+        }
+
+        return C_frame;
+
+    }
+
+    public int I_frame(){
+        if(timer < 15){
+            timer++;
+            if(timer == 15){
+                I_frame += 1;
+                if(I_frame == 4){
+                    I_frame = 0;
+                }
+                timer = 0;
+            }
+        }
+        return I_frame;
+    }
+
     public void render(SpriteBatch batch){
-        batch.draw(background,0,0);
-        Play.draw(batch);
-        Instructions.draw(batch);
-        Quit.draw(batch);
+
+        if(Main.C_animation){
+            C_menu.setPosition(0,0);
+            C_menu.draw(batch);
+
+        }
+
+        if (Main.I_animation){
+            I_menu.setPosition(0,0);
+            I_menu.draw(batch);
+        }
 
     }
 
     public void update(SpriteBatch batch, int x, int y){
-        Play.set(new Sprite(tmp.get(choice)));
-        Instructions.set(new Sprite(tmp1.get(choice1)));
-        Quit.set(new Sprite(tmp2.get(choice2)));
 
-        Play.setPosition(0,0);
-        Instructions.setPosition(x - 120,y - 90);
-        Quit.setPosition(x - 15,y - 190);
-        render(batch);
+        if(Main.C_animation){
+            C_frame();
+            C_menu.set(new Sprite(capcom_Sprites.get(0).get(C_frame)));
+            render(batch);
+
+        }
+
+        if (Main.I_animation){
+            I_frame();
+            I_menu.set(new Sprite(Intro_Sprites.get(0).get(I_frame)));
+            render(batch);
+        }
+
+
     }
 }

@@ -5,7 +5,6 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
-import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.maps.tiled.TiledMap;
 import com.badlogic.gdx.maps.tiled.TmxMapLoader;
@@ -16,15 +15,20 @@ import com.badlogic.gdx.physics.box2d.World;
 
 public class Main extends ApplicationAdapter {
     SpriteBatch batch;
-    Texture img;
-    public static final float PPM = 0.3f;
-    public static OrthographicCamera camera;
-    public static int moves1;
-    static boolean animation, shop = false, moveBody, House = false, Weirdplace = false, Map2 = false;
-    public static final int UP = 0, Down = 1, Left = 2, Right = 3, NW = 4, SW = 5, NE = 6;
-    private Player p;
 
-    static WorldCreator worldCreator;
+    public static final float PPM = 0.3f;
+
+    public static OrthographicCamera camera;
+
+    public static int moves1;
+
+    public static final int UP = 0, Down = 1, Left = 2, Right = 3, NW = 4, SW = 5, NE = 6;
+
+    static boolean C_animation = false, I_animation = false, animation;
+
+    static String Game = "Intro_1";
+
+    private Player p;
 
     public static World world;
 
@@ -36,6 +40,8 @@ public class Main extends ApplicationAdapter {
 
     Box2DDebugRenderer b2dr;
 
+    private Menu menu;
+
 
 
     @Override
@@ -43,8 +49,6 @@ public class Main extends ApplicationAdapter {
         world = new World(new Vector2(0,0),true);
 
         batch = new SpriteBatch();
-        //img = new Texture("Assets/TitleScreen.png");
-        img = new Texture("Assets/player assets/Lan's room.png");
         camera = new OrthographicCamera(720f, 480f);
         p = new Player();
 
@@ -60,29 +64,61 @@ public class Main extends ApplicationAdapter {
 
         b2dr = new Box2DDebugRenderer();
 
+        menu = new Menu();
+
     }
 
     @Override
     public void render() {
-        camera.zoom = 0.1f;
-        world.step(1/60f,6,2);
-        Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
-        camera.update();
-        renderer.setView(camera);
-		renderer.render();
+        if(Game.equals("Intro_1")){ //starting the game off with the capcom intro
+            C_animation = true;
+            Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
+            batch.begin();
+            menu.update(batch,0,0);
+            batch.end();
+            if(Menu.change){
+                Game = "Intro_2";
+            }
+        }
 
-        batch.setProjectionMatrix(camera.combined);
+        if(Game.equals("Intro_2")){ // once the capcom intro is finished loop title screen
+            C_animation = false;
+            I_animation = true;
+            menu.m.play();
+            Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
+            batch.begin();
+            menu.update(batch,0,0);
+            batch.end();
+            if(Gdx.input.isKeyPressed(Input.Keys.ENTER)){ // if user presses the enter button
+//                menu.s.play(); // add this feature in later and make it so the animation is slower
+                Game = "Level1";
+                menu.m.stop();
+            }
+        }
 
-        b2dr.render(world,camera.combined);
+        if(Game.equals("Level1")) { // start of level 1
+            I_animation = false;
+            camera.zoom = 0.1f;
+            world.step(1 / 60f, 6, 2);
+            Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
-        System.out.println(p.getX() + " , " + p.getY());
+            camera.update();
+            renderer.setView(camera);
+            renderer.render();
+
+            batch.setProjectionMatrix(camera.combined);
+
+            b2dr.render(world, camera.combined);
+
+            System.out.println(p.getX() + " , " + p.getY());
 
 
-        batch.begin();
-        update();
-        batch.end();
-        move();
+            batch.begin();
+            update();
+            batch.end();
+            move();
+        }
     }
 
     public void update(){
@@ -120,11 +156,11 @@ public class Main extends ApplicationAdapter {
             p.frames = 0;
         }
 
-	    p.setX(p.body.getPosition().x);
+	    p.setX(p.body.getPosition().x); // set the pos of player sprite to player body
 	    p.setY(p.body.getPosition().y);
 
-	    camera.position.x = p.getX();
-	    camera.position.y = p.getY();
+	    camera.position.x = p.getX(); // camera follows players x
+	    camera.position.y = p.getY(); // camera follows players y
 
     }
 
@@ -133,6 +169,6 @@ public class Main extends ApplicationAdapter {
     @Override
     public void dispose () {
         batch.dispose();
-        img.dispose();
+        renderer.dispose();
     }
 }
