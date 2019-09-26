@@ -20,18 +20,21 @@ public class Player {
     int t = 0;
     int width = 18, height = 34;
 
+    Box2DDebugRenderer bdr;
+
     int [] open_list = new int [] {7,7,7,7,7,7,7};
 
     public Player(){
         Lan = new Sprite();
         Load();
         createbody();
+        bdr = new Box2DDebugRenderer();
     }
 
     public void render(SpriteBatch batch){
         Lan.setPosition(100,100);
-        batch.draw(Lan,body.getPosition().x - Lan.getWidth() * (float) Math.pow(Main.PPM,2),body.getPosition().y - Lan.getHeight() * (float) Math.pow(Main.PPM, 2), Lan.getWidth() * (float) Math.pow(Main.PPM, 2) * 3, Lan.getHeight() * (float) Math.pow(Main.PPM, 2) * 3);
-
+        batch.draw(Lan,body.getPosition().x - 25 * (float) Math.pow(Main.PPM,2),body.getPosition().y - 25 * (float) Math.pow(Main.PPM, 2), Lan.getWidth() * (float) Math.pow(Main.PPM, 2) * 3, Lan.getHeight() * (float) Math.pow(Main.PPM, 2) * 3);
+//        bdr.render(Main.world,Main.camera.combined);
     }
 
     public int moveFrames(){ // this is the animation for the movement frames the character
@@ -86,7 +89,7 @@ public class Player {
 
         fdef.shape = shape;
 
-        shape.setAsBox(5 * (float) Math.pow(Main.PPM, 2), 10 * (float) Math.pow(Main.PPM, 2));
+        shape.setAsBox(18 * (float) Math.pow(Main.PPM, 2), 14 * (float) Math.pow(Main.PPM, 2));
 
         this.body.createFixture(fdef);
 

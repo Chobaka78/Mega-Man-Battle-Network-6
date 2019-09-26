@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.2" tiledversion="1.2.4" orientation="orthogonal" renderorder="right-down" width="167" height="66" tilewidth="20" tileheight="20" infinite="0" nextlayerid="50" nextobjectid="547">
+<map version="1.2" tiledversion="1.2.4" orientation="orthogonal" renderorder="right-down" width="167" height="66" tilewidth="20" tileheight="20" infinite="0" nextlayerid="51" nextobjectid="550">
  <tileset firstgid="1" source="West City.tsx"/>
  <tileset firstgid="577" source="WeirdPlace.tsx"/>
  <tileset firstgid="1729" source="lan's room.tsx"/>
@@ -144,8 +144,13 @@
 </data>
  </layer>
  <objectgroup id="49" name="Boundary">
-  <object id="546" x="164" y="1181.5">
-   <polyline points="0,0 25.5,-13.25 57,2.75 163.75,-50.5 157.75,-53.5 161.5,-55.5 149,-61.75 144,-60 138.25,-62 122.75,-55.25 116.75,-55.5 104.25,-62.25 97,-61.75 81.5,-71.5 82.75,-76.25 98.5,-85.25 88,-91 74.25,-79.5 41,-94.75 -5.5,-72 16.5,-63 18,-66.75 25.25,-66.75 25.25,-43.25 -2.25,-28.75 8.5,-23 -17,-8.5"/>
+  <object id="547" x="165.333" y="1183.67">
+   <polyline points="0,0 24.6667,-13.3333 56,2.33333 166.333,-51.6667 141,-64.3333 124,-54.3333 95,-67.6667 97.6667,-70 87,-75.3333 84.3333,-73.3333 81,-76.3333 82.6667,-77.6667 40.3333,-98.6667 -12.3333,-75.3333 30,-52.3333 -8.33333,-30.6667 6,-22.3333 -21,-10.6667"/>
+  </object>
+ </objectgroup>
+ <objectgroup id="50" name="Exit">
+  <object id="549" x="146.667" y="1174">
+   <polyline points="0,0 16.6667,9"/>
   </object>
  </objectgroup>
 </map>
