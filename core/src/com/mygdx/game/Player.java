@@ -22,7 +22,7 @@ public class Player {
 
     Box2DDebugRenderer bdr;
 
-    int [] open_list = new int [] {7,7,7,7,7,7,7};
+    int [] open_list = new int [] {8,8,8,8,8,8,8,8};
 
     public Player(){
         Lan = new Sprite();
@@ -58,7 +58,7 @@ public class Player {
 
     public void Load(){
         for(int i = 0; i < open_list.length; i ++ ){
-            for(String w : new String[]{"Lanup", "Landown", "Lanleft", "Lanright" , "LanNW", "LanSW","LanNE"}){
+            for(String w : new String[]{"Lanup", "Landown", "Lanleft", "Lanright" , "LanNW", "LanSW","LanNE", "LanSE"}){
                 tmp = new ArrayList<Texture>();
                 for(int k = 0; k < open_list[i]; k ++){
                     tmp.add(new Texture("Assets/Lan walk/" + w + "/" + w + k + ".png"));
@@ -114,6 +114,18 @@ public class Player {
             moveFrames();
         }
         else if(Main.animation && Main.moves1 == Main.Right){
+            moveFrames();
+        }
+        else if(Main.animation && Main.moves1 == Main.NE){
+            moveFrames();
+        }
+        else if(Main.animation && Main.moves1 == Main.SE){
+            moveFrames();
+        }
+        else if(Main.animation && Main.moves1 == Main.SW){
+            moveFrames();
+        }
+        else if(Main.animation && Main.moves1 == Main.NW){
             moveFrames();
         }
         else{

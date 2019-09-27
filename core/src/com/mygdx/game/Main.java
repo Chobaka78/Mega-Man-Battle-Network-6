@@ -22,7 +22,7 @@ public class Main extends ApplicationAdapter {
 
     public static int moves1;
 
-    public static final int UP = 0, Down = 1, Left = 2, Right = 3, NW = 4, SW = 5, NE = 6;
+    public static final int UP = 0, Down = 1, Left = 2, Right = 3, NW = 4, SW = 5, NE = 6 , SE = 7;
 
     static boolean C_animation = false, I_animation = false, animation;
 
@@ -129,13 +129,43 @@ public class Main extends ApplicationAdapter {
     public void move() {
         p.body.setLinearVelocity(0, 0);
 
+        if(Gdx.input.isKeyPressed(Input.Keys.RIGHT) && (Gdx.input.isKeyPressed(Input.Keys.UP) )){
+            moves1 = NE;
+            System.out.println("NE");
+            p.getBody().applyLinearImpulse(new Vector2(80, 80), p.getBody().getWorldCenter(), true);
+            animation = true;
 
-        if (Gdx.input.isKeyPressed(Input.Keys.UP)) {// moves the player up
+        }
+
+        else if(Gdx.input.isKeyPressed(Input.Keys.RIGHT) && (Gdx.input.isKeyPressed(Input.Keys.DOWN) )){
+            moves1 = SE;
+            p.getBody().applyLinearImpulse(new Vector2(80, -80), p.getBody().getWorldCenter(), true);
+            animation = true;
+
+        }
+
+        else if(Gdx.input.isKeyPressed(Input.Keys.LEFT) && (Gdx.input.isKeyPressed(Input.Keys.DOWN) )){
+            moves1 = SW;
+            p.getBody().applyLinearImpulse(new Vector2(-80, -80), p.getBody().getWorldCenter(), true);
+            animation = true;
+
+        }
+
+        else if(Gdx.input.isKeyPressed(Input.Keys.LEFT) && (Gdx.input.isKeyPressed(Input.Keys.UP) )){
+            moves1 = NW;
+            p.getBody().applyLinearImpulse(new Vector2(-80, 80), p.getBody().getWorldCenter(), true);
+            animation = true;
+
+        }
+
+        else  if (Gdx.input.isKeyPressed(Input.Keys.UP)) {// moves the player up
             moves1 = UP;
             System.out.println("up");
             p.getBody().applyLinearImpulse(new Vector2(0, 80), p.getBody().getWorldCenter(), true);
             animation = true;
-        } else if (Gdx.input.isKeyPressed(Input.Keys.DOWN)) {
+        }
+
+        else if (Gdx.input.isKeyPressed(Input.Keys.DOWN)) {
             moves1 = Down;
             System.out.println("down");
             p.getBody().applyLinearImpulse(new Vector2(0, -80), p.getBody().getWorldCenter(), true);
@@ -150,7 +180,12 @@ public class Main extends ApplicationAdapter {
             System.out.println("right");
             p.getBody().applyLinearImpulse(new Vector2(80, 0), p.getBody().getWorldCenter(), true);
             animation = true;
-        } else {
+
+        }
+
+
+
+        else {
             p.getBody().applyLinearImpulse(new Vector2(p.getBody().getLinearVelocity().x * -1, p.getBody().getLinearVelocity().y * -1), p.getBody().getWorldCenter(), true);
             animation = false;
             p.frames = 0;
