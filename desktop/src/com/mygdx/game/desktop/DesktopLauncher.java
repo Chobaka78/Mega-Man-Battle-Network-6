@@ -1,3 +1,9 @@
+/*
+ * This is the main launcher class
+ * 2019 - Ghanem & Usman
+ * Megaman Battle Network 6
+ */
+
 package com.mygdx.game.desktop;
 
 import com.badlogic.gdx.Files;
@@ -14,9 +20,6 @@ public class DesktopLauncher {
 		config.height = 480; // set height of screen
 		config.title = "Mega Man Battle Network 6";
 		config.addIcon("Assets/icon.png", Files.FileType.Internal);
-		config.foregroundFPS = 36;
-
+		config.foregroundFPS = 60;
 	}
 }
-
-//double checking if the files were update
